@@ -1,5 +1,12 @@
 ---
-title: "About"
+title: "About Me"
 ---
 
-About this site
+## Background
+I grew up in Harare, Zimbabwe, where I developed an early interest in mathematics. I went on to complete a BSc in Applied Mathematics before moving to South Africa to pursue an MSc in Mathematics.
+
+## Why Data Science
+My time studying mathematics sharpened my appetite for advanced analytics, and I found myself drawn to the practical, data-driven problem solving that data science offers. The MDS program felt like the natural next step to build on that foundation and turn theoretical knowledge into applied skill.
+
+## Outside of Data Science
+I'm a recreational golfer, and I've come to appreciate the character building that comes with a high handicap. I'm also a passionate football fan and support Chelsea FC, and I follow Formula 1 closely, cheering on Scuderia Ferrari.
