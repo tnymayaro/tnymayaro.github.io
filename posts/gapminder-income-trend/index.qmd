@@ -1,0 +1,80 @@
+---
+title: "Fifty Years of Change: Life Expectancy Gains and Losses, 1952-2007"
+author: "Takura Nyamayaro"
+date: "2026-09-25"
+---
+
+## Introduction
+
+Data: [Gapminder Foundation](https://www.gapminder.org/data/), via the
+[gapminder R package](https://cran.r-project.org/package=gapminder),
+released under CC0. The dataset covers life expectancy, GDP per capita,
+and population for 142 countries from 1952 to 2007.
+
+Life expectancy in most countries rose substantially between 1952 and 2007, one of the defining shifts of the twentieth century. But the gains were not even. This post asks a simple question: which countries gained the most over that half-century, and which gained the least or lost ground entirely?
+
+````{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(gapminder)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+head(gapminder)
+````
+
+## Computing the change per country
+
+For each country, we take life expectancy in 1952 and in 2007 and
+compute the difference.
+
+````{r}
+#| label: compute-gains
+
+gains <- gapminder |>
+  filter(year %in% c(1952, 2007)) |>
+  select(country, continent, year, lifeExp) |>
+  pivot_wider(names_from = year, values_from = lifeExp, names_prefix = "y") |>
+  mutate(gain = y2007 - y1952) |>
+  arrange(desc(gain))
+
+head(gains, 10)
+````
+
+## Top and bottom 10
+
+````{r}
+#| label: top-bottom
+
+top10 <- head(gains, 10)
+bottom10 <- tail(gains, 10)
+combined <- bind_rows(top10, bottom10)
+combined
+````
+
+## Figure: biggest gains and declines
+
+````{r}
+#| label: fig-gains
+#| fig-cap: "Countries with the largest life expectancy gains and losses, 1952 to 2007."
+
+ggplot(combined, aes(x = reorder(country, gain), y = gain, fill = continent)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = "Change in life expectancy (years)",
+    title = "Biggest gains and declines, 1952-2007"
+  )
+````
+
+## Discussion
+
+Over the half-century from 1952 to 2007, Oman recorded the largest increase in life expectancy at 38.1 years, followed by Vietnam, Indonesia, and Saudi Arabia, each adding over 30 years. Asian countries dominate the top of the list, accounting for seven of the ten largest gains; Libya and Gambia, both African, are the only non-Asian countries in that top ten.
+
+The bottom ten tell a different story. Nine of the ten smallest gains belong to sub-Saharan African countries. The tenth, Norway, is a different kind of case: its 7.5-year gain looks modest only because it started in 1952 already near 73 years, close to the practical ceiling for the period, not because of stagnation. By contrast, Lesotho and Zambia gained less than six months over the entire fifty-five years from a much lower baseline, and Swaziland and Zimbabwe are the only two countries in the dataset to lose ground outright, falling by 1.8 and 5.0 years respectively.
+
+---
