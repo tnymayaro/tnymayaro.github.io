@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/gapminder-outliers/index.html",
       "/posts/first-weeks/index.html"
     ]
   }

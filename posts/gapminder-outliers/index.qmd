@@ -1,0 +1,93 @@
+---
+title: "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder"
+author: "Takura Nyamayaro"
+date: "2026-09-25"
+---
+
+## Introduction
+
+Data: [Gapminder Foundation](https://www.gapminder.org/data/), accessed via the
+[plotly.express built-in dataset](https://plotly.com/python-api-reference/generated/plotly.express.data.html#plotly.express.data.gapminder),
+released under CC0.
+
+Most treatments of the Gapminder dataset lean on Hans Rosling's well-known global scatterplot: as income rises, so does life expectancy. That chart is compelling, but it flattens the whole world into a single trend line, hiding a lot of variation within continents. This post narrows the lens. By 2007, which countries diverged most from their own continent's average life expectancy? Comparing each country to its regional peers, rather than to the world, surfaces both standout performers and the countries falling furthest behind, patterns the global view conceals.
+
+```{python}
+#| label: setup
+#| message: false
+#| warning: false
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+
+gapminder = px.data.gapminder()
+gapminder.head()
+
+```
+
+## Continent-level trends
+
+First, the average life expectancy trajectory for each continent, by year.
+
+```{python}
+#| label: continent-means
+
+continent_means = (
+    gapminder.groupby(["continent", "year"])["lifeExp"]
+    .mean()
+    .reset_index()
+)
+continent_means.tail(10)
+```
+
+## Computing each country's deviation
+
+For every country and year, we compute how far that country's life
+expectancy sits above or below its continent's mean for that year.
+
+```{python}
+#| label: deviation
+
+merged = gapminder.merge(
+    continent_means,
+    on = ["continent", "year"],
+    suffixes = ("", "_continent_mean"),
+)
+merged["deviation"] = merged["lifeExp"] - merged["lifeExp_continent_mean"]
+merged[merged["year"] == 2007].sort_values("deviation", ascending = False).head()
+```
+
+## Ranking the outliers in 2007
+
+```{python}
+#| label: outliers
+
+final_year = merged[merged["year"] == 2007].copy()
+top5 = final_year.sort_values("deviation", ascending = False).head(5)
+bottom5 = final_year.sort_values("deviation", ascending = True).head(5)
+outliers = pd.concat([top5, bottom5]).sort_values("deviation")
+outliers[["country", "continent", "lifeExp", "deviation"]]
+```
+
+## Figure: biggest over- and under-performers
+
+```{python}
+#| label: fig-outliers
+#| fig-cap: "Countries whose 2007 life expectancy deviated most from their continent's average."
+
+fig, ax = plt.subplots(figsize=(8, 6))
+colors = ["tab:red" if d < 0 else "tab:blue" for d in outliers["deviation"]]
+ax.barh(outliers["country"], outliers["deviation"], color = colors)
+ax.set_xlabel("Deviation from continent mean life expectancy (years)")
+ax.set_title("Top and bottom outliers, 2007")
+plt.tight_layout()
+plt.show()
+```
+
+## Discussion
+
+The five largest negative deviations are Afghanistan (26.9 years below the Asian average), and four countries roughly 12 to 15 years below their own continental mean: Swaziland, Mozambique, and Zambia in Africa, and Haiti in the Americas. Afghanistan's gap is the most extreme in the dataset, close to double the next-largest deviation, likely reflecting decades of conflict that a continent-wide average does not capture.
+
+The more notable result is that all five top positive outliers are African: Réunion, Libya, Tunisia, Mauritius, and Algeria each sit 17 to 22 years above the African mean. A single "African average" hides this pattern entirely. The continent contains both the best and worst performing countries relative to their peers. The high performers share some structural traits: North African or Mediterranean geography for Libya, Tunisia, and Algeria, and island status for Réunion and Mauritius. This suggests geography and trade access may matter as much as continental identity, **though this analysis does not test that causally**.
+

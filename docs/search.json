@@ -1,17 +1,59 @@
 [
   {
-    "objectID": "posts/first-weeks/index.html",
-    "href": "posts/first-weeks/index.html",
-    "title": "My first weeks in MDS",
+    "objectID": "posts/gapminder-outliers/index.html",
+    "href": "posts/gapminder-outliers/index.html",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
     "section": "",
-    "text": "My mind raced as I boarded the bus to orientation. After years of studying exclusively online, I was about to sit in a physical classroom for the first time in a decade. Any lingering anxiety dissolved surprisingly fast. By the end of day one, an inspiring program introduction had left me energized, and I had already started connecting with classmates from around the globe with diverse professional backgrounds.\n\n\n\nOrientation day on campus.\n\n\nWe spent that first evening wandering campus together, building early friendships over ice cream, an easy, unhurried evening that quietly set the tone for what was to come. Two weeks later, life has been a whirlwind of refreshing old skills, tackling new concepts, and readjusting to student life. I have settled into a rhythm: the evening before class, as soon as the lecture slides go live, I dive in to prep for the next day.\nThe school days themselves are a fast paced mix of lectures and hands on labs, and what has surprised me most is how vital that hands on time is. The labs bridge the gap between theory and practice, taking the concepts we discuss in class and making them genuinely click. It has been a big shift from studying behind a screen, but I am locked in and genuinely excited for what is ahead."
+    "text": "Data: Gapminder Foundation, accessed via the plotly.express built-in dataset, released under CC0.\nMost treatments of the Gapminder dataset lean on Hans Rosling’s well-known global scatterplot: as income rises, so does life expectancy. That chart is compelling, but it flattens the whole world into a single trend line, hiding a lot of variation within continents. This post narrows the lens. By 2007, which countries diverged most from their own continent’s average life expectancy? Comparing each country to its regional peers, rather than to the world, surfaces both standout performers and the countries falling furthest behind, patterns the global view conceals.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport plotly.express as px\n\ngapminder = px.data.gapminder()\ngapminder.head()\n\n\n\n\n\n\n\n\ncountry\ncontinent\nyear\nlifeExp\npop\ngdpPercap\niso_alpha\niso_num\n\n\n\n\n0\nAfghanistan\nAsia\n1952\n28.801\n8425333\n779.445314\nAFG\n4\n\n\n1\nAfghanistan\nAsia\n1957\n30.332\n9240934\n820.853030\nAFG\n4\n\n\n2\nAfghanistan\nAsia\n1962\n31.997\n10267083\n853.100710\nAFG\n4\n\n\n3\nAfghanistan\nAsia\n1967\n34.020\n11537966\n836.197138\nAFG\n4\n\n\n4\nAfghanistan\nAsia\n1972\n36.088\n13079460\n739.981106\nAFG\n4"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
+    "objectID": "posts/gapminder-outliers/index.html#introduction",
+    "href": "posts/gapminder-outliers/index.html#introduction",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
     "section": "",
-    "text": "My first weeks in MDS\n\n\n\n\n\n\n\n\nSep 13, 2026\n\n\nTakura Nyamayaro\n\n\n\n\n\nNo matching items"
+    "text": "Data: Gapminder Foundation, accessed via the plotly.express built-in dataset, released under CC0.\nMost treatments of the Gapminder dataset lean on Hans Rosling’s well-known global scatterplot: as income rises, so does life expectancy. That chart is compelling, but it flattens the whole world into a single trend line, hiding a lot of variation within continents. This post narrows the lens. By 2007, which countries diverged most from their own continent’s average life expectancy? Comparing each country to its regional peers, rather than to the world, surfaces both standout performers and the countries falling furthest behind, patterns the global view conceals.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport plotly.express as px\n\ngapminder = px.data.gapminder()\ngapminder.head()\n\n\n\n\n\n\n\n\ncountry\ncontinent\nyear\nlifeExp\npop\ngdpPercap\niso_alpha\niso_num\n\n\n\n\n0\nAfghanistan\nAsia\n1952\n28.801\n8425333\n779.445314\nAFG\n4\n\n\n1\nAfghanistan\nAsia\n1957\n30.332\n9240934\n820.853030\nAFG\n4\n\n\n2\nAfghanistan\nAsia\n1962\n31.997\n10267083\n853.100710\nAFG\n4\n\n\n3\nAfghanistan\nAsia\n1967\n34.020\n11537966\n836.197138\nAFG\n4\n\n\n4\nAfghanistan\nAsia\n1972\n36.088\n13079460\n739.981106\nAFG\n4"
+  },
+  {
+    "objectID": "posts/gapminder-outliers/index.html#continent-level-trends",
+    "href": "posts/gapminder-outliers/index.html#continent-level-trends",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
+    "section": "Continent-level trends",
+    "text": "Continent-level trends\nFirst, the average life expectancy trajectory for each continent, by year.\n\ncontinent_means = (\n    gapminder.groupby([\"continent\", \"year\"])[\"lifeExp\"]\n    .mean()\n    .reset_index()\n)\ncontinent_means.tail(10)\n\n\n\n\n\n\n\n\ncontinent\nyear\nlifeExp\n\n\n\n\n50\nOceania\n1962\n71.0850\n\n\n51\nOceania\n1967\n71.3100\n\n\n52\nOceania\n1972\n71.9100\n\n\n53\nOceania\n1977\n72.8550\n\n\n54\nOceania\n1982\n74.2900\n\n\n55\nOceania\n1987\n75.3200\n\n\n56\nOceania\n1992\n76.9450\n\n\n57\nOceania\n1997\n78.1900\n\n\n58\nOceania\n2002\n79.7400\n\n\n59\nOceania\n2007\n80.7195"
+  },
+  {
+    "objectID": "posts/gapminder-outliers/index.html#computing-each-countrys-deviation",
+    "href": "posts/gapminder-outliers/index.html#computing-each-countrys-deviation",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
+    "section": "Computing each country’s deviation",
+    "text": "Computing each country’s deviation\nFor every country and year, we compute how far that country’s life expectancy sits above or below its continent’s mean for that year.\n\nmerged = gapminder.merge(\n    continent_means,\n    on = [\"continent\", \"year\"],\n    suffixes = (\"\", \"_continent_mean\"),\n)\nmerged[\"deviation\"] = merged[\"lifeExp\"] - merged[\"lifeExp_continent_mean\"]\nmerged[merged[\"year\"] == 2007].sort_values(\"deviation\", ascending = False).head()\n\n\n\n\n\n\n\n\ncountry\ncontinent\nyear\nlifeExp\npop\ngdpPercap\niso_alpha\niso_num\nlifeExp_continent_mean\ndeviation\n\n\n\n\n1271\nReunion\nAfrica\n2007\n76.442\n798094\n7670.122558\nREU\n638\n54.806038\n21.635962\n\n\n911\nLibya\nAfrica\n2007\n73.952\n6036914\n12057.499280\nLBY\n434\n54.806038\n19.145962\n\n\n1571\nTunisia\nAfrica\n2007\n73.923\n10276158\n7092.923025\nTUN\n788\n54.806038\n19.116962\n\n\n983\nMauritius\nAfrica\n2007\n72.801\n1250882\n10956.991120\nMUS\n480\n54.806038\n17.994962\n\n\n35\nAlgeria\nAfrica\n2007\n72.301\n33333216\n6223.367465\nDZA\n12\n54.806038\n17.494962"
+  },
+  {
+    "objectID": "posts/gapminder-outliers/index.html#ranking-the-outliers-in-2007",
+    "href": "posts/gapminder-outliers/index.html#ranking-the-outliers-in-2007",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
+    "section": "Ranking the outliers in 2007",
+    "text": "Ranking the outliers in 2007\n\nfinal_year = merged[merged[\"year\"] == 2007].copy()\ntop5 = final_year.sort_values(\"deviation\", ascending = False).head(5)\nbottom5 = final_year.sort_values(\"deviation\", ascending = True).head(5)\noutliers = pd.concat([top5, bottom5]).sort_values(\"deviation\")\noutliers[[\"country\", \"continent\", \"lifeExp\", \"deviation\"]]\n\n\n\n\n\n\n\n\ncountry\ncontinent\nlifeExp\ndeviation\n\n\n\n\n11\nAfghanistan\nAsia\n43.828\n-26.900485\n\n\n1463\nSwaziland\nAfrica\n39.613\n-15.193038\n\n\n1043\nMozambique\nAfrica\n42.082\n-12.724038\n\n\n647\nHaiti\nAmericas\n60.916\n-12.692120\n\n\n1691\nZambia\nAfrica\n42.384\n-12.422038\n\n\n35\nAlgeria\nAfrica\n72.301\n17.494962\n\n\n983\nMauritius\nAfrica\n72.801\n17.994962\n\n\n1571\nTunisia\nAfrica\n73.923\n19.116962\n\n\n911\nLibya\nAfrica\n73.952\n19.145962\n\n\n1271\nReunion\nAfrica\n76.442\n21.635962"
+  },
+  {
+    "objectID": "posts/gapminder-outliers/index.html#figure-biggest-over--and-under-performers",
+    "href": "posts/gapminder-outliers/index.html#figure-biggest-over--and-under-performers",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
+    "section": "Figure: biggest over- and under-performers",
+    "text": "Figure: biggest over- and under-performers\n\nfig, ax = plt.subplots(figsize=(8, 6))\ncolors = [\"tab:red\" if d &lt; 0 else \"tab:blue\" for d in outliers[\"deviation\"]]\nax.barh(outliers[\"country\"], outliers[\"deviation\"], color = colors)\nax.set_xlabel(\"Deviation from continent mean life expectancy (years)\")\nax.set_title(\"Top and bottom outliers, 2007\")\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\nFigure 1: Countries whose 2007 life expectancy deviated most from their continent’s average."
+  },
+  {
+    "objectID": "posts/gapminder-outliers/index.html#discussion",
+    "href": "posts/gapminder-outliers/index.html#discussion",
+    "title": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder",
+    "section": "Discussion",
+    "text": "Discussion\nThe five largest negative deviations are Afghanistan (26.9 years below the Asian average), and four countries roughly 12 to 15 years below their own continental mean: Swaziland, Mozambique, and Zambia in Africa, and Haiti in the Americas. Afghanistan’s gap is the most extreme in the dataset, close to double the next-largest deviation, likely reflecting decades of conflict that a continent-wide average does not capture.\nThe more notable result is that all five top positive outliers are African: Réunion, Libya, Tunisia, Mauritius, and Algeria each sit 17 to 22 years above the African mean. A single “African average” hides this pattern entirely. The continent contains both the best and worst performing countries relative to their peers. The high performers share some structural traits: North African or Mediterranean geography for Libya, Tunisia, and Algeria, and island status for Réunion and Mauritius. This suggests geography and trade access may matter as much as continental identity, though this analysis does not test that causally."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Takura Nyamayaro",
+    "section": "",
+    "text": "Hello! I am Takura from Edmonton, Alberta, but originally from Harare, Zimbabwe. Before joining MDS, I worked as a Data Analyst at financial institution. I am hoping to build on my data analysis experience by developing stronger data science skills, and eventually work on more advanced analytics and modeling projects in the financial industry."
   },
   {
     "objectID": "about.html",
@@ -42,10 +84,17 @@
     "text": "Outside of Data Science\nI’m a recreational golfer, and I’ve come to appreciate the character building that comes with a high handicap. I’m also a passionate football fan and support Chelsea FC, and I follow Formula 1 closely, cheering on Scuderia Ferrari."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Takura Nyamayaro",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "Hello! I am Takura from Edmonton, Alberta, but originally from Harare, Zimbabwe. Before joining MDS, I worked as a Data Analyst at financial institution. I am hoping to build on my data analysis experience by developing stronger data science skills, and eventually work on more advanced analytics and modeling projects in the financial industry."
+    "text": "Who Outpaced Their Continent? Life Expectancy Divergence in Gapminder\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\nTakura Nyamayaro\n\n\n\n\n\n\n\n\n\n\n\n\nMy first weeks in MDS\n\n\n\n\n\n\n\n\nSep 13, 2026\n\n\nTakura Nyamayaro\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/first-weeks/index.html",
+    "href": "posts/first-weeks/index.html",
+    "title": "My first weeks in MDS",
+    "section": "",
+    "text": "My mind raced as I boarded the bus to orientation. After years of studying exclusively online, I was about to sit in a physical classroom for the first time in a decade. Any lingering anxiety dissolved surprisingly fast. By the end of day one, an inspiring program introduction had left me energized, and I had already started connecting with classmates from around the globe with diverse professional backgrounds.\n\n\n\nOrientation day on campus.\n\n\nWe spent that first evening wandering campus together, building early friendships over ice cream, an easy, unhurried evening that quietly set the tone for what was to come. Two weeks later, life has been a whirlwind of refreshing old skills, tackling new concepts, and readjusting to student life. I have settled into a rhythm: the evening before class, as soon as the lecture slides go live, I dive in to prep for the next day.\nThe school days themselves are a fast paced mix of lectures and hands on labs, and what has surprised me most is how vital that hands on time is. The labs bridge the gap between theory and practice, taking the concepts we discuss in class and making them genuinely click. It has been a big shift from studying behind a screen, but I am locked in and genuinely excited for what is ahead."
   }
 ]
