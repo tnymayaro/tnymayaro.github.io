@@ -6,9 +6,10 @@ date: "2026-09-25"
 
 ## Introduction
 
-Data: [Gapminder Foundation](https://www.gapminder.org/data/), accessed via the
-[plotly.express built-in dataset](https://plotly.com/python-api-reference/generated/plotly.express.data.html#plotly.express.data.gapminder),
-released under CC0.
+Data: originally from the [Gapminder Foundation](https://www.gapminder.org/data/)
+(CC-BY licensed material, per Gapminder's own [citation terms](https://www.gapminder.org/free-material/)),
+accessed here via the [plotly.express built-in dataset](https://plotly.com/python-api-reference/generated/plotly.express.data.html#plotly.express.data.gapminder),
+a curated excerpt released under CC0 by its maintainers.
 
 Most treatments of the Gapminder dataset lean on Hans Rosling's well-known global scatterplot: as income rises, so does life expectancy. That chart is compelling, but it flattens the whole world into a single trend line, hiding a lot of variation within continents. This post narrows the lens. By 2007, which countries diverged most from their own continent's average life expectancy? Comparing each country to its regional peers, rather than to the world, surfaces both standout performers and the countries falling furthest behind, patterns the global view conceals.
 
